@@ -1,6 +1,6 @@
 <script setup>
 import {ref,onMounted} from 'vue';
-import { queryAllApi,addApi } from '@/api/dept';
+import { queryAllApi,addApi,queryByIdApi,updateApi } from '@/api/dept';
 import { ElMessage } from 'element-plus';
 
 //查询
@@ -24,7 +24,16 @@ const save = async () => {
   deptFormRef.value.validate(async (valid) => { //valid 表示是否校验通过，如果为true则通过 false不通过
 
       if(valid) {
-        const result = await addApi(dept.value);
+
+        let result ;
+        if(dept.value.id){//修改
+          console.log(dept.value);
+          result = await updateApi(dept.value);
+        }else{
+          result = await addApi(dept.value);
+        }
+
+
         if(result.code){//成功
           //提示信息
           ElMessage.success('操作成功')
@@ -42,6 +51,21 @@ const save = async () => {
 
   
 }
+
+
+//编辑
+const edit = async (id) => {
+  formTitle.value = '修改部门';
+  
+  const result = await queryByIdApi(id);
+  if(result.code){
+    dialogFormVisible.value = true;
+    dept.value = result.data;
+  }
+  
+}
+
+
 
 //新增部门
 const addDept = () => {
@@ -101,8 +125,11 @@ const rules = ref({
       <el-table-column prop="createTime" label="创建日期" width="350" align="center"/>
       <el-table-column prop="updateTime" label="更新日期" width="350" align="center"/>
       <el-table-column prop="address" label="操作"  align="center">
-        <el-button type="warning" size="small"><el-icon><Edit /></el-icon>&nbsp&nbsp编辑</el-button>
-        <el-button type="danger" size="small"><el-icon><Delete /></el-icon>&nbsp&nbsp删除</el-button>
+        <template #default="scope">
+          <el-button type="warning" size="small" @click="edit(scope.row.id)"><el-icon><Edit /></el-icon>&nbsp&nbsp编辑</el-button>
+          <el-button type="danger" size="small"><el-icon><Delete /></el-icon>&nbsp&nbsp删除</el-button>
+        </template>
+        
       </el-table-column>
     </el-table>
   </div>
