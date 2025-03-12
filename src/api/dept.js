@@ -9,13 +9,11 @@ export const queryAllApi = () => request.get('/depts');
 export const addApi = (dept) => request.post('/depts',dept);
 
 //根据ID查询部门
-export const queryByIdApi = (id) => request.get(`/depts/${id}`)
-
-
+export const queryByIdApi = (id) => request.get(`/depts/${id}`);
 
 //修改
-export const updateApi = (dept) => request.put('/depts',dept)
+export const updateApi = (dept) => request.put('/depts',dept);
 
 //删除
-
+export const deleteByIdApi = (id) => request.delete(`/depts?id=${id}`);
 
