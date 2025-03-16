@@ -258,7 +258,6 @@ const deleteClazz = async (id) => {
 
   <!-- 编辑dialog对话框 -->
   <el-dialog v-model="dialogFormVisible" :title="dialogTitle" width="500" aling-center="true" center="true">
-    {{ dialogForm }}
     <el-form :model="dialogForm" label-position="right">
       <el-form-item label="班级名称" :label-width="formLabelWidth">
         <el-input v-model="dialogForm.name" autocomplete="off" />
