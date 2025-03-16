@@ -2,7 +2,7 @@
 import { ref, watch, onMounted } from 'vue'
 import { pageApi, queryByIdApi, addApi, updateApi, deleteApi } from '@/api/clazz.js'
 import { listApi as empListApi } from '@/api/emp';
-import { ElMessage } from 'element-plus';
+import { ElMessage, ElMessageBox } from 'element-plus';
 
 
 //onMounted预加载
@@ -157,22 +157,22 @@ const addClazz = () => {
 //dialog-button-保存按钮(save):新增/修改班级信息
 const save = async () => {
   let result;
-  if(dialogForm.value.id){
+  if (dialogForm.value.id) {
     //存在id为更新班级信息功能
     result = await updateApi(dialogForm.value);
-  }else{
+  } else {
     //id为空时，为新增班级信息功能
     result = await addApi(dialogForm.value);
   }
 
-  if(result.code){
+  if (result.code) {
     //提示成功信息
     ElMessage.success('操作成功！');
     //关闭对话框
     dialogFormVisible.value = false;
     //调用search函数，刷新表格数据
     search();
-  }else{
+  } else {
     ElMessage.error('操作失败');
   }
 }
@@ -180,17 +180,22 @@ const save = async () => {
 
 //table-button-删除按钮(deleteClazz):根据id删除该行班级数据
 const deleteClazz = async (id) => {
-  const result = await deleteApi(id);
-  if(result.code){
-    //提示成功信息
-    ElMessage.success('删除成功');
-    //关闭对话框
-    dialogFormVisible.value = false;
-    //调用search函数，刷新表格数据
-    search();
-  }else{
-    ElMessage.error('服务器异常，操作失败');
-  }
+  ElMessageBox.confirm('您确认要删除该行班级信息吗？', '提示',
+    { confirmButtonText: '确认', cancelButtonText: '取消', type: 'warning' }
+  ).then(async () => {
+    const result = await deleteApi(id);
+    if (result.code) {
+      //提示成功信息
+      ElMessage.success('删除成功');
+      //关闭对话框
+      dialogFormVisible.value = false;
+      //调用search函数，刷新表格数据
+      search();
+    } else {
+      ElMessage.error('服务器异常，操作失败');
+    }
+  })
+
 }
 
 
