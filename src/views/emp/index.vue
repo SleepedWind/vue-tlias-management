@@ -462,7 +462,6 @@ const deleteByIds =  () => {
             <el-form-item label="所属部门">
               <el-select v-model="employee.deptId" placeholder="请选择部门" style="width: 100%;">
                 <el-option v-for="dept in depts" :key="dept.id" :label="dept.name" :value="dept.id"></el-option>
-                <el-option label="市场部" value="2"></el-option>
               </el-select>
             </el-form-item>
           </el-col>

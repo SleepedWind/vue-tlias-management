@@ -18,4 +18,7 @@ export const updateApi = (emp) => request.put('/emps',emp);
 //删除
 export const deleteApi = (ids) => request.delete(`/emps?ids=${ids}`);
 
+//查询全部员工数据
+export const listApi = () => request.get("/emps/list");
+
 
